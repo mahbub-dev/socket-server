@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
-		origin: "https://react-chat-app-ecru.vercel.app",
+		origin: "https://react-chat-app-he2w.vercel.app",
 	  	preflightContinue: false,
 	},
 });

@@ -2,7 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
-		origin: process.env.CLIENT,
+		
+		origin: ['http://localhost:3000',"https://socket-server-dtrx.onrender.com"]
 	},
 });
 

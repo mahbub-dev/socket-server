@@ -3,7 +3,7 @@ dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
 		origin: process.env.CLIENT,
-		preflightContinue: false,
+		preflightContinue: false
 	},
 });
 

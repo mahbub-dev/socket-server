@@ -3,6 +3,7 @@ dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
 		origin: process.env.CLIENT,
+		preflightContinue: false,
 	},
 });
 
@@ -39,6 +40,21 @@ io.on("connection", (socket) => {
 			message,
 			createdAt: Date.now(),
 		});
+	});
+
+	socket.on("sendTypingStatus", ({ sender, receiverId, isTyping }) => {
+		const user = getUser(receiverId);
+		let status = {
+			isTyping: true,
+			sender,
+			receiverId,
+		};
+		if (isTyping) {
+			io.to(user?.socketId).emit("getTypingStatus", status);
+		} else {
+			status.isTyping = false;
+			io.to(user?.socketId).emit("getTypingStatus", status);
+		}
 	});
 
 	//when disconnect

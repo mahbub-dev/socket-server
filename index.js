@@ -2,10 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
-		
-		origin: "https://socket-server-dtrx.onrender.com"
-		methods: ["GET","HEAD","PUT","PATCH","POST","DELETE"],
-  preflightContinue: false,
+		origin: "https://react-chat-app-ecru.vercel.app",
+	  	preflightContinue: false,
 	},
 });
 

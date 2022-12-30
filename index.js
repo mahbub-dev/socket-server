@@ -3,7 +3,7 @@ dotenv.config();
 const io = require("socket.io")(3001, {
 	cors: {
 		origin: process.env.CLIENT,
-		preflightContinue: false
+		preflightContinue: false,
 	},
 });
 
@@ -33,14 +33,29 @@ io.on("connection", (socket) => {
 	});
 
 	//send and get message
-	socket.on("sendMessage", ({ sender, receiverId, message }) => {
-		const user = getUser(receiverId);
-		io.to(user?.socketId).emit("getMessage", {
-			sender,
-			message,
-			createdAt: Date.now(),
-		});
-	});
+	socket.on(
+		"sendMessage",
+		({ receiverId, message, conversationId, sender }) => {
+			const user = getUser(receiverId);
+			io.to(user?.socketId).emit("getMessage", {
+				message,
+				sender,
+				conversationId,
+				createdAt: Date.now(),
+			});
+		}
+	);
+	socket.on(
+		"isSeen",
+		({ receiverId, totalUnseen, conversationId, sender }) => {
+			const user = getUser(receiverId);
+			io.to(user?.socketId).emit("getSeen", {
+				sender,
+				conversationId,
+				totalUnseen,
+			});
+		}
+	);
 
 	socket.on("sendTypingStatus", ({ sender, receiverId, isTyping }) => {
 		const user = getUser(receiverId);

@@ -33,29 +33,21 @@ io.on("connection", (socket) => {
 	});
 
 	//send and get message
-	socket.on(
-		"sendMessage",
-		({ receiverId, message, conversationId, sender }) => {
-			const user = getUser(receiverId);
-			io.to(user?.socketId).emit("getMessage", {
-				message,
-				sender,
-				conversationId,
-				createdAt: Date.now(),
-			});
-		}
-	);
-	socket.on(
-		"isSeen",
-		({ receiverId, totalUnseen, conversationId, sender }) => {
-			const user = getUser(receiverId);
-			io.to(user?.socketId).emit("getSeen", {
-				sender,
-				conversationId,
-				totalUnseen,
-			});
-		}
-	);
+	socket.on("sendMessage", ({ receiverId, senderId, message, convType }) => {
+		const user = getUser(receiverId);
+		io.to(user?.socketId).emit("getMessage", {
+			message,
+			senderId,
+		});
+	});
+
+	socket.on("isSeen", ({ receiverId,senderId, message}) => {
+		const user = getUser(receiverId);
+		io.to(user?.socketId).emit("getSeen", {
+			senderId,
+			message,
+		});
+	});
 
 	socket.on("sendTypingStatus", ({ sender, receiverId, isTyping }) => {
 		const user = getUser(receiverId);

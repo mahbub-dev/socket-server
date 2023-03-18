@@ -33,15 +33,19 @@ io.on("connection", (socket) => {
 	});
 
 	//send and get message
-	socket.on("sendMessage", ({ receiverId, senderId, message, convType }) => {
-		const user = getUser(receiverId);
-		io.to(user?.socketId).emit("getMessage", {
-			message,
-			senderId,
-		});
-	});
+	socket.on(
+		"sendMessage",
+		({ receiverId, senderId, message, isDeleted, convType }) => {
+			const user = getUser(receiverId);
+			io.to(user?.socketId).emit("getMessage", {
+				message,
+				senderId,
+				isDeleted,
+			});
+		}
+	);
 
-	socket.on("isSeen", ({ receiverId,senderId, message}) => {
+	socket.on("isSeen", ({ receiverId, senderId, message }) => {
 		const user = getUser(receiverId);
 		io.to(user?.socketId).emit("getSeen", {
 			senderId,

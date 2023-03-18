@@ -53,19 +53,14 @@ io.on("connection", (socket) => {
 		});
 	});
 
-	socket.on("sendTypingStatus", ({ sender, receiverId, isTyping }) => {
+	socket.on("sendTypingStatus", ({ senderId, receiverId, isTyping }) => {
 		const user = getUser(receiverId);
 		let status = {
-			isTyping: true,
-			sender,
+			isTyping,
+			senderId,
 			receiverId,
 		};
-		if (isTyping) {
-			io.to(user?.socketId).emit("getTypingStatus", status);
-		} else {
-			status.isTyping = false;
-			io.to(user?.socketId).emit("getTypingStatus", status);
-		}
+		io.to(user?.socketId).emit("getTypingStatus", status);
 	});
 
 	//when disconnect

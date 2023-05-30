@@ -35,11 +35,12 @@ io.on("connection", (socket) => {
 	//send and get message
 	socket.on(
 		"sendMessage",
-		({ receiverId, senderId, message, isDeleted, convType }) => {
+		({ receiverId, senderId, message, isDeleted,senderName, convType }) => {
 			const user = getUser(receiverId);
 			io.to(user?.socketId).emit("getMessage", {
 				message,
 				senderId,
+				senderName,
 				isDeleted,
 			});
 		}
